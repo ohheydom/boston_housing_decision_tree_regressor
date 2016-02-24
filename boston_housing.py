@@ -5,15 +5,9 @@ import numpy as np
 import pylab as pl
 from sklearn import datasets
 from sklearn.tree import DecisionTreeRegressor
-
-################################
-### ADD EXTRA LIBRARIES HERE ###
-################################
-
 from sklearn.grid_search import GridSearchCV
 from sklearn.cross_validation import train_test_split
 from sklearn.metrics import make_scorer, mean_squared_error
-
 
 def load_data():
     """Load the Boston dataset."""
@@ -21,17 +15,12 @@ def load_data():
     boston = datasets.load_boston()
     return boston
 
-
 def explore_city_data(city_data):
     """Calculate the Boston housing statistics."""
 
     # Get the labels and features from the housing data
     housing_prices = city_data.target
     housing_features = city_data.data
-
-    ###################################
-    ### Step 1. YOUR CODE GOES HERE ###
-    ###################################
 
     # Please calculate the following values using the Numpy library
     # Size of data (number of houses)?
@@ -52,33 +41,17 @@ def explore_city_data(city_data):
     data_information = (size_of_data, number_of_features, minimum_price, maximum_price, mean_price, median_price, standard_deviation)
     print("Size of data: %s\nNumber of features: %s\nMinimum Price: %s\nMaximum Price: %s\nMean Price: %s\nMedian Price: %s\nStandard Deviation: %s\n" % data_information)
 
-
 def split_data(city_data):
     """Randomly shuffle the sample set. Divide it into 70 percent training and 30 percent testing data."""
 
     # Get the features and labels from the Boston housing data
     X, y = city_data.data, city_data.target
-
-    ###################################
-    ### Step 2. YOUR CODE GOES HERE ###
-    ###################################
-
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
     return X_train, y_train, X_test, y_test
 
-
 def performance_metric(label, prediction):
     """Calculate and return the appropriate error performance metric."""
-
-    ###################################
-    ### Step 3. YOUR CODE GOES HERE ###
-    ###################################
-
-    # The following page has a table of scoring functions in sklearn:
-    # http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics
-
     return mean_squared_error(label, prediction)
-
 
 def learning_curve(depth, X_train, y_train, X_test, y_test):
     """Calculate the performance of the model after a set of training data."""
@@ -101,7 +74,6 @@ def learning_curve(depth, X_train, y_train, X_test, y_test):
         train_err[i] = performance_metric(y_train[:s], regressor.predict(X_train[:s]))
         test_err[i] = performance_metric(y_test, regressor.predict(X_test))
 
-
     # Plot learning curve graph
     learning_curve_graph(sizes, train_err, test_err)
 
@@ -117,7 +89,6 @@ def learning_curve_graph(sizes, train_err, test_err):
     pl.xlabel('Training Size')
     pl.ylabel('Error')
     pl.show()
-
 
 def model_complexity(X_train, y_train, X_test, y_test):
     """Calculate the performance of the model as model complexity increases."""
@@ -145,7 +116,6 @@ def model_complexity(X_train, y_train, X_test, y_test):
     # Plot the model complexity graph
     model_complexity_graph(max_depth, train_err, test_err)
 
-
 def model_complexity_graph(max_depth, train_err, test_err):
     """Plot training and test error as a function of the depth of the decision tree learn."""
 
@@ -158,11 +128,9 @@ def model_complexity_graph(max_depth, train_err, test_err):
     pl.ylabel('Error')
     pl.show()
 
-
 # This function finds the house with the most similar features by finding the difference in values of each feature, squaring that value and adding up the total error. The function takes into account the feature importances predicted by our regression model. It returns an array of all the error values.
 def similar_houses(sample, data, feature_importances):
     return np.sum((feature_importances * (data-sample)**2), axis=1)
-
 
 def fit_predict_model(city_data):
     """Find and tune the optimal model. Make a prediction on housing data."""
@@ -174,10 +142,6 @@ def fit_predict_model(city_data):
     regressor = DecisionTreeRegressor()
 
     parameters = {'max_depth':(1,2,3,4,5,6,7,8,9,10)}
-
-    ###################################
-    ### Step 4. YOUR CODE GOES HERE ###
-    ###################################
 
     # 1. Find an appropriate performance metric. This should be the same as the
     # one used in your performance_metric procedure above:
@@ -237,7 +201,6 @@ def main():
 
     # Tune and predict Model
     fit_predict_model(city_data)
-
 
 if __name__ == "__main__":
     main()
